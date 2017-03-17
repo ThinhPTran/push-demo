@@ -1,6 +1,8 @@
 (ns roomlist.push
   (:require [reagent.core :as r]
-            [taoensso.sente :as sente :refer (cb-success?)]))
+            [taoensso.sente :as sente :refer (cb-success?)]
+            [roomlist.events]
+            [re-frame.core :as re-frame]))
 
 ; generate a list of usernames
 (def possible-usernames
@@ -17,14 +19,10 @@
   (def receive-channel (:ch-recv ws-connection))
   (def send-channel! (:send-fn ws-connection)))
 
-; reactive atom that manages our application state
-(def events 
-  (r/atom []))
-
 ; handle application-specific events
 (defn- app-message-received [[msgType data]]
   (case msgType
-    :room/join (swap! events conj data)
+    :room/join (re-frame/dispatch [:set-usernames data]) ; (reset! events {:data data})
     (.log js/console "Unmatched application event")))
 
 ; handle websocket-connection-specific events
