@@ -3,7 +3,7 @@
             [re-frame.core :as re-frame]
             [roomlist.events]
             [roomlist.subs]
-            [roomlist.push :as push]
+            [roomlist.system :as push]
             [roomlist.views :as views]
             [roomlist.config :as config]))
 

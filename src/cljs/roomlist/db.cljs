@@ -2,12 +2,11 @@
 
 
 (def init-tableconfig {
-                       :colHeaders ["" "Kia" "Nissian" "Toyota" "Honda"]
+                       :colHeaders ["MD" "TVD" "Deviation"]
                        :data        [
-                                     ;;["" "Kia" "Nissan" "Toyota" "Honda"]
-                                     ["2008" 0 0 0 0]
-                                     ["2009" 0 0 0 0]
-                                     ["2010" 0 0 0 0]]
+                                     [0 0 0]
+                                     [0 0 0]
+                                     [0 0 0]]
                        :rowHeaders  false
                        :contextMenu true})
 

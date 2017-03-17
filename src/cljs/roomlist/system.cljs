@@ -1,4 +1,4 @@
-(ns roomlist.push
+(ns roomlist.system
   (:require [reagent.core :as r]
             [taoensso.sente :as sente :refer (cb-success?)]
             [roomlist.events]
@@ -7,7 +7,7 @@
 ; generate a list of usernames
 (def possible-usernames
   (let [first-names ["Happy" "Gleeful" "Joyful" "Cheerful" "Merry" "Jolly"]
-        last-names ["Aardvark" "Turtle" "Woodchuck" "Cheetah" "Frog" "Hedgehog"]]
+        last-names ["Dan" "Jonh" "Larry" "Thinh" "Quang" "Dung"]]
     (for [name1 first-names
           name2 last-names]
       (str name1 " " name2))))
