@@ -14,6 +14,11 @@
     (:user/names db)))
 
 (re-frame/reg-sub
+  :tableload
+  (fn [db _]
+    (get-in db [:tableload])))
+
+(re-frame/reg-sub
   :tableconfig
   (fn [db _]
     (get-in db [:tableconfig] mydb/init-tableconfig)))

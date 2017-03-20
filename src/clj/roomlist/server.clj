@@ -5,13 +5,13 @@
             [compojure.core :refer :all]
             [compojure.handler :as handler]
             [compojure.route :as route]
-            [roomlist.push :as push])
+            [roomlist.system :as sys])
   (:gen-class))
 
 (defroutes app-routes
   (GET "/" [] (response/resource-response "public/index.html"))
-  (GET  "/channel" req (push/ring-ws-handoff req))
-  (POST "/channel" req (push/ring-ws-post req))
+  (GET  "/channel" req (sys/ring-ws-handoff req))
+  (POST "/channel" req (sys/ring-ws-post req))
   (route/resources "/")
   (route/not-found "404! :("))
 
@@ -30,11 +30,11 @@
 
 (defn -main [& args]
   (log/info "creating db")
-  (let [db (push/create-db "datomic:mem://roomlist")]
+  (let [db (sys/create-db "datomic:mem://roomlist")]
     (log/info "starting router")
-    (push/ws-message-router (:db-connection db))
+    (sys/ws-message-router (:db-connection db))
     (log/info "starting change monitor")
-    (future (push/change-monitor (:change-queue db))))
+    (future (sys/change-monitor (:change-queue db))))
   (log/info "starting server")
   (server/run-server app {:port 3000})
   (log/info "server started. http://localhost:3000"))

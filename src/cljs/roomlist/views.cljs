@@ -5,26 +5,27 @@
 
 (defn sampleTable [tableconfig]
   (let [table (atom nil)
-        tableconfigext (assoc-in @tableconfig [:afterChange] #(dispatch [:set-tablevalue %]))]
+        tmp @(subscribe [:tableconfig])]
     (reagent/create-class {:reagent-render
                            (fn [] [:div {:style {:min-width "310px" :max-width "800px" :margin "0 auto"}}])
                            :component-did-mount
                            (fn [this]
                              (do
-                               ;(println "component-did-mount: " tableconfigext)
-                               (reset! table (js/Handsontable (reagent/dom-node this) (clj->js tableconfigext)))))
+                               (reset! table (js/Handsontable (reagent/dom-node this) (clj->js (assoc-in @tableconfig [:afterChange] #(dispatch [:set-tablevalue %])))))))
                            :should-component-update
                            (fn [this [_ old-config] [_ new-config]]
-                             ;(println "should-component-update: " tableconfigext)
+                             (println "should-component-update: " @tableconfig)
+                             (println "should-component-update: " (assoc-in @tableconfig [:afterChange] #(dispatch [:set-tablevalue %])))
                              (.destroy @table)
-                             (reset! table (js/Handsontable (reagent/dom-node this) (clj->js tableconfigext)))
+                             (reset! table (js/Handsontable (reagent/dom-node this) (clj->js (assoc-in @tableconfig [:afterChange] #(dispatch [:set-tablevalue %])))))
                              true)})))
 
 (defn sampleTableWrapper []
   (let [tableconfig (subscribe [:tableconfig])
-        usernames (subscribe [:user/names])]
+        usernames (subscribe [:user/names])
+        tableload (subscribe [:tableload])]
     [:div "My Table"
-     [sampleTable tableconfig @usernames]]))
+     [sampleTable tableconfig @tableload]]))
 
 (defn user-item [name]
   [:li (str (:user/name name))])
